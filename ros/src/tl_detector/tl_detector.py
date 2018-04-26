@@ -77,11 +77,11 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
-	rospy.loginfo("image_cb")
+#	rospy.loginfo("image_cb")
         self.has_image = True
         self.camera_image = msg
         light_wp, state = self.process_traffic_lights()
-	rospy.loginfo("closest light wp: {0},  State: {1}".format(light_wp,state))
+#	rospy.loginfo("closest light wp: {0},  State: {1}".format(light_wp,state))
 
         '''
         Publish upcoming red lights at camera frequency.
@@ -149,13 +149,13 @@ class TLDetector(object):
         """
         # light = None
 
-        closest_light = None
-        line_wp_idx = None
+ #       closest_light = None
+ #       line_wp_idx = None
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
-	rospy.loginfo("stop_line_positions")
-	rospy.loginfo(stop_line_positions)
+#	rospy.loginfo("stop_line_positions")
+#	rospy.loginfo(stop_line_positions)
         line_wp_idx = None
 
         if(self.pose):
@@ -176,6 +176,7 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
+#	    return 100, state
             return line_wp_idx, state
         
         return -1, TrafficLight.UNKNOWN
