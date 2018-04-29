@@ -18,7 +18,11 @@ The team consists of the following team members
 
 ### Waypoint Updater
 
-TODO
+We coded the waypoint updater in two phases like described in the lessons. First we implemented the partial updater and then the full updater. 
+
+The updater suscribes to the topics /traffic_waypoint, /current_pose, /base_waypoint and /ostacle_waypoint. It needs all the information to publish the next waypoints.
+
+It works at 50 Hertz but we tried at lower rates and it works too.
 
 ### DBW Node
 
