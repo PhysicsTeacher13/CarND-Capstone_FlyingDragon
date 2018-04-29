@@ -46,7 +46,7 @@ This involves finding the nearest waypoint to the cars position, and finding the
 
 The state and index of the closest traffic light is then published on the '/traffic_waypoint' topic
 
-### Traffic Light Detector
+### Traffic Light Classifier
 
 #TODO
 
