@@ -1,3 +1,77 @@
+# Self Driving Car Nanodegree Capstone project
+
+## Introduction
+
+This read me forms the basis of the submission report for team FlyingDragons.
+
+The team consists of the following team members
+
+| Name | Email address |
+| ------------- |:-------------:|
+| Wilfred Henry| physicsteacher13@gmail.com  |
+| Lybron Sobers|	lybronsobers@icloud.com|
+| Mostafa Mansour | mostafa.e.mansour@gmail.com|
+| Jose Antonio de la Fuente| delafu@gmail.com|
+| George Haigh|	georgehaigh@hotmail.com |
+| Fabrizio Frigeni| ffrige@hotmail.com   |
+
+
+### Waypoint Updater
+
+TODO
+
+### DBW Node
+
+TODO
+
+### Traffic Light Detector
+
+The traffic light detector was based on the starter code from the project walkthrough.
+
+###### A summary of the functionality follows:
+
+The coordinates of the Traffic Lights are received by subscribing to the '/vehicle/traffic_lights' topic. This also includes the status of each light which was used in order to test the rest of the system.
+The coordinates of the stop lines is returned from the yaml configuration file.
+
+As the cooridinates of the pose of the lights is static, they are only read on the traffic_lights topic to try to limit the latency that was experienced during development.
+
+A KDTree of the base waypoints is created by subscribing to the "base_waypoints" message.
+Once the coordinates of the traffic lights and stop lines are known, the nearest waypoint to these is obtained by querying the KDTree containing the base waypoints.
+Again these activities are only done once to minimised latency.
+
+The vehicle pose is received on the /current_pose topic.
+
+A loop is run at a process the traffic lights.
+This involves finding the nearest waypoint to the cars position, and finding the closest stop line and traffic light in from of the vehicle, by using the waypoint indicies of these to judge the distance.
+
+The state and index of the closest traffic light is then published on the '/traffic_waypoint' topic
+
+### Traffic Light Detector
+
+#TODO
+
+
+### Project Issues
+
+The team experienced issues with the Udacity Simulator during this project. Enabling the camera results in significant lag, which causes the PID to be unable to maintain control of the steering.
+This appears to be a known issue, this discussions on slack in online.
+(https://github.com/udacity/sdc-issue-reports/issues/1217)
+
+The following attempts were made to recify this:
+- Running the simulator on an additional PC, and connecting via ports
+- Using the minimal graphic quality settings
+- Modifying the server.py
+- Adjusting the VM memory and CPU setting to give more processing power to the VM, and alternately the host
+- Modifying the tcp buffer size using sysctl.configuration
+- Unsubscribing the the image_color topic when not near a traffic light
+
+None of these were particularly useful, the only real solution was to disable the camera when not in use (i.e when between traffic signs)
+
+## Reference
+
+For completeness, the original Readme follows below this point for refernce purposes.
+
+
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 Please use **one** of the two installation options, either native **or** docker installation.
