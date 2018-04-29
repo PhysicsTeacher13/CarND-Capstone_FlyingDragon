@@ -59,7 +59,7 @@ class TLDetector(object):
         rely on the position of the light and the camera image to predict it.
         '''
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb, queue_size=1)
-        self.sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1, buff_size=5000000)
+#        self.sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1, buff_size=5000000)
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
 
@@ -80,14 +80,14 @@ class TLDetector(object):
 
     def loop(self):
 # running at 1Hz. Can be made faster 
-	    rate = rospy.Rate(1)
+	    rate = rospy.Rate(10)
 	    while not rospy.is_shutdown():
  #                   rospy.loginfo("loop")
 #		rospy.loginfo("range: {0}, {1}" .format( self.CAMERA_RANGE,self.distToClosestLight))
 		if self.distToClosestLight < self.CAMERA_RANGE:
 			self.sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1, buff_size=5000000)
 #			rospy.loginfo("sub")
-		else:			
+		else:		 		
 #			rospy.loginfo("unsub")
 			self.sub6.unregister()
 
@@ -149,7 +149,7 @@ class TLDetector(object):
 
 # parse the positions only once
 	if not self.foundLightIdxs:
-#		rospy.loginfo("traffic_cb2")		
+		rospy.loginfo("traffic_cb_finding_lights")		
 
 
 # get the x and y locations of the lights
@@ -169,8 +169,13 @@ class TLDetector(object):
 			else:
 				self.foundLightIdxs = False
 
-	if not self.foundStopLinesIdxs:	
+		rospy.loginfo("-------------------------------------")
+		rospy.loginfo("traffic_cb: traffic_light_idxs: {}" .format(self.traffic_light_idxs))
+		rospy.loginfo("-------------------------------------")
 
+
+	if not self.foundStopLinesIdxs:	
+		rospy.loginfo("traffic_cb_finding_lines")
 		stop_line_positions = self.config['stop_line_positions']
 		for i, line_pos in enumerate(stop_line_positions):
 			# Get stop line waypoint index
@@ -180,13 +185,6 @@ class TLDetector(object):
 			self.stop_line_idxs.append(self.get_closest_waypoint(line_pos[0], line_pos[1]))
 			self.foundStopLinesIdxs = True
 
-
-
-			
-		rospy.loginfo("-------------------------------------")
-		rospy.loginfo("traffic_cb: should have all the idx of lines and lights")
-		rospy.loginfo("-------------------------------------")
-		rospy.loginfo("traffic_cb: traffic_light_idxs: {}" .format(self.traffic_light_idxs))
 		rospy.loginfo("-------------------------------------")
 		rospy.loginfo("traffic_cb: stop_line_idxs: {}" .format(self.stop_line_idxs))
 		rospy.loginfo("-------------------------------------")
@@ -339,7 +337,7 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            rospy.loginfo("closest light idx: {0},closest light idx: {1}, closest light state: {2}, car wp: {3}, distLisght: {4}" .format(line_wp_idx, light_wp_idx, state, car_wp_idx, self.distToClosestLight))
+#            rospy.loginfo("closest light idx: {0},closest light idx: {1}, closest light state: {2}, car wp: {3}, distLisght: {4}" .format(line_wp_idx, light_wp_idx, state, car_wp_idx, self.distToClosestLight))
 
             return line_wp_idx, state
         
