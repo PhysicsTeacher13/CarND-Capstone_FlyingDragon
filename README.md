@@ -1,6 +1,6 @@
 # Self Driving Car Nanodegree Capstone project
 
-### Introduction
+## Introduction
 
 This read me forms the basis of the submission report for team FlyingDragons.
 
